@@ -12,7 +12,7 @@
 
 你可以直接下载并使用exe工具：
 
-* 👉 **[BiliFetcher 最新版本下载链接](https://release-assets.githubusercontent.com/github-production-release-asset/1134253941/5de77e9a-0041-4d2d-bb19-8971ff5ba547?sp=r&sv=2018-11-09&sr=b&spr=https&se=2026-01-14T14%3A20%3A22Z&rscd=attachment%3B+filename%3DBiliFetcher.exe&rsct=application%2Foctet-stream&skoid=96c2d410-5711-43a1-aedd-ab1947aa7ab0&sktid=398a6654-997b-47e9-b12b-9515b896b4de&skt=2026-01-14T13%3A19%3A40Z&ske=2026-01-14T14%3A20%3A22Z&sks=b&skv=2018-11-09&sig=BdEoNWgj3TdtwxQjmDfWc15xiYzCMdtn9cIfJ%2FD5gz4%3D&jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmVsZWFzZS1hc3NldHMuZ2l0aHVidXNlcmNvbnRlbnQuY29tIiwia2V5Ijoia2V5MSIsImV4cCI6MTc2ODM5ODk0MSwibmJmIjoxNzY4Mzk3MTQxLCJwYXRoIjoicmVsZWFzZWFzc2V0cHJvZHVjdGlvbi5ibG9iLmNvcmUud2luZG93cy5uZXQifQ.wMz9_P2EjpbVYks-1lmpRDXiY_ItCue7RdSc0pGkshw&response-content-disposition=attachment%3B%20filename%3DBiliFetcher.exe&response-content-type=application%2Foctet-stream)**
+* 👉 **[BiliFetcher 最新版本下载链接](https://github.com/WayneWang23/BiliFetcher/releases/download/v1.0/BiliFetcher.exe)**
 
 
 ## 🖥️ 界面使用指南
