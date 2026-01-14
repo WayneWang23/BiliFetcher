@@ -2,24 +2,24 @@
 
 **BiliFetcher** 是一款高效的 Bilibili 视频/番剧批量下载工具。它支持自定义画质等级，并能同步生成 ASS 格式的弹幕文件，让用户在本地播放器观看 B 站视频的同时，也能完美挂载并体验实时弹幕。
 
-## 📦 获取发布版本 (Release)
-
-你可以直接下载并使用exe工具：
-
-* 👉 **[BiliFetcher 最新版本下载页]()**
-
-
 ## ✨ 核心功能
 
 * **全能解析**：支持 B 站番剧（ss/ep）及普通视频（BV/av）的批量解析下载。
 * **智能画质匹配**：可指定目标画质上限，程序将自动下载该等级及以下的最优清晰度。
 * **弹幕转换引擎**：自动生成 ASS 格式弹幕文件，支持自定义字号、不透明度、字体和流动速度。
 
+## 📦 获取发布版本 (Release)
+
+你可以直接下载并使用exe工具：
+
+* 👉 **[BiliFetcher 最新版本下载链接](https://release-assets.githubusercontent.com/github-production-release-asset/1134253941/5de77e9a-0041-4d2d-bb19-8971ff5ba547?sp=r&sv=2018-11-09&sr=b&spr=https&se=2026-01-14T14%3A20%3A22Z&rscd=attachment%3B+filename%3DBiliFetcher.exe&rsct=application%2Foctet-stream&skoid=96c2d410-5711-43a1-aedd-ab1947aa7ab0&sktid=398a6654-997b-47e9-b12b-9515b896b4de&skt=2026-01-14T13%3A19%3A40Z&ske=2026-01-14T14%3A20%3A22Z&sks=b&skv=2018-11-09&sig=BdEoNWgj3TdtwxQjmDfWc15xiYzCMdtn9cIfJ%2FD5gz4%3D&jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmVsZWFzZS1hc3NldHMuZ2l0aHVidXNlcmNvbnRlbnQuY29tIiwia2V5Ijoia2V5MSIsImV4cCI6MTc2ODM5ODk0MSwibmJmIjoxNzY4Mzk3MTQxLCJwYXRoIjoicmVsZWFzZWFzc2V0cHJvZHVjdGlvbi5ibG9iLmNvcmUud2luZG93cy5uZXQifQ.wMz9_P2EjpbVYks-1lmpRDXiY_ItCue7RdSc0pGkshw&response-content-disposition=attachment%3B%20filename%3DBiliFetcher.exe&response-content-type=application%2Foctet-stream)**
+
+
 ## 🖥️ 界面使用指南
 
-![BiliFetcher 界面展示](./GUI.png)
-
-下载并运行 `BiliFetcher.exe` 后，你将看到以下四个主要操作区：
+<p align="center">
+  <img src="./GUI.png" width="400" alt="BiliFetcher 界面展示">
+</p>
 
 1. **账号凭证 (Cookie)**：在此处粘贴从浏览器获取的 Cookie。这是下载 **1080P+ 高清画质**及**大会员番剧**的关键凭证。
 2. **任务列表**：将你想下载的视频或番剧的链接逐行粘贴进去。支持混合粘贴，程序会自动识别类型并批量下载。
