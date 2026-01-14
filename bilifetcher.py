@@ -31,7 +31,6 @@ class BiliUniversalDownloader:
         self.load_cookie()
 
     def setup_main_scroll(self):
-        # 创建带滚动条的主布局
         self.canvas = tk.Canvas(self.root, bg="#f4f4f4", highlightthickness=0)
         self.scrollbar = ttk.Scrollbar(self.root, orient="vertical", command=self.canvas.yview)
         self.scrollable_frame = tk.Frame(self.canvas, bg="#f4f4f4")
@@ -44,12 +43,10 @@ class BiliUniversalDownloader:
         self.setup_ui(self.scrollable_frame)
 
     def setup_ui(self, parent):
-        # 标题
         header = tk.Frame(parent, bg="#fb7299", height=60)
         header.pack(fill="x", pady=(0, 10))
         tk.Label(header, text="BiliFetcher B站下载器", font=("微软雅黑", 16, "bold"), fg="white", bg="#fb7299").pack(pady=15)
 
-        # 1. Cookie
         f_cookie = tk.LabelFrame(parent, text=" 1. 账号凭证 (Cookie) ", font=("微软雅黑", 10, "bold"), padx=15, pady=10, bg="#ffffff")
         f_cookie.pack(fill="x", padx=20, pady=5)
         tk.Label(f_cookie, text="💡 获取方式: F12 -> Network -> 刷新 -> 选第一个请求 -> 复制 Cookie 标头", font=("微软雅黑", 9), fg="#666666", bg="#ffffff").pack(anchor="w")
@@ -62,7 +59,6 @@ class BiliUniversalDownloader:
         c_sb.pack(side="right", fill="y")
         tk.Button(f_cookie, text="💾 保存并暂存凭证", command=self.save_cookie, bg="#fb7299", fg="white", font=("微软雅黑", 9), relief="flat").pack(side=tk.RIGHT, pady=5)
 
-        # 2. 任务列表
         f_url = tk.LabelFrame(parent, text=" 2. 任务列表 (支持 ss/ep/BV/av) ", font=("微软雅黑", 10, "bold"), padx=15, pady=10, bg="#ffffff")
         f_url.pack(fill="x", padx=20, pady=5)
         u_frame = tk.Frame(f_url, bg="#ffffff")
@@ -73,7 +69,6 @@ class BiliUniversalDownloader:
         self.url_text.pack(side="left", fill="x", expand=True)
         u_sb.pack(side="right", fill="y")
 
-        # 3. 设置
         f_set = tk.LabelFrame(parent, text=" 3. 下载与弹幕设置 ", font=("微软雅黑", 10, "bold"), padx=15, pady=10, bg="#ffffff")
         f_set.pack(fill="x", padx=20, pady=5)
         tk.Label(f_set, text="画质天花板 (下载其及以下可获取的最高画质):", bg="#ffffff").grid(row=0, column=0, sticky="w")
@@ -95,21 +90,18 @@ class BiliUniversalDownloader:
         tk.Label(dm_frame, text="字体:", bg="#ffffff").pack(side=tk.LEFT, padx=10)
         self.dm_font = tk.StringVar(value="Microsoft YaHei"); tk.Entry(dm_frame, textvariable=self.dm_font, width=15).pack(side=tk.LEFT, padx=5)
 
-        # 4. 存储
         f_path = tk.LabelFrame(parent, text=" 4. 存储路径 ", font=("微软雅黑", 10, "bold"), padx=15, pady=10, bg="#ffffff")
         f_path.pack(fill="x", padx=20, pady=5)
         self.path_var = tk.StringVar(value=os.path.join(os.path.expanduser("~"), "Downloads"))
         tk.Entry(f_path, textvariable=self.path_var, width=65, relief="flat", bg="#f9f9f9").pack(side=tk.LEFT, ipady=3)
         tk.Button(f_path, text=" 选择目录 ", command=lambda: self.path_var.set(filedialog.askdirectory()), font=("微软雅黑", 9)).pack(side=tk.LEFT, padx=10)
 
-        # 状态
         self.status_var = tk.StringVar(value="☕ 等待任务中...")
         tk.Label(parent, textvariable=self.status_var, font=("微软雅黑", 11, "bold"), fg="#fb7299", bg="#f4f4f4", wraplength=800).pack(pady=15)
         self.progress_bar = ttk.Progressbar(parent, length=740, mode='determinate'); self.progress_bar.pack(pady=5)
         self.start_btn = tk.Button(parent, text="🚀 立即开始批量任务", command=self.start_batch_task, bg="#fb7299", fg="white", font=("微软雅黑", 12, "bold"), relief="flat", padx=40, pady=10)
         self.start_btn.pack(pady=20)
 
-    # --- 功能 ---
     def save_cookie(self):
         cookie = self.cookie_text.get("1.0", tk.END).strip()
         with open(COOKIE_FILE, "w", encoding="utf-8") as f: f.write(cookie)
@@ -177,14 +169,21 @@ class BiliUniversalDownloader:
                 api = f'https://api.bilibili.com/pgc/player/web/playurl?ep_id={id_val}&fnval=16' if is_pgc else f'https://api.bilibili.com/x/player/wbi/playurl?bvid={id_val}&cid={cid}&fnval=16'
                 data = requests.get(api, headers=headers).json()
                 
+                res_obj = data.get('result') or data.get('data')
                 v_url, act_q = self.match_quality(data, target_q)
-                a_url = (data.get('result') or data.get('data'))['dash']['audio'][0]['baseUrl']
                 
+                # 安全获取音频流地址
+                try:
+                    a_url = res_obj['dash']['audio'][0]['baseUrl']
+                except:
+                    self.status_var.set(f"[{i+1}/{total}] ❌ 无法获取音频流")
+                    continue
+
                 base_n = self.clean_filename(cur_title)
                 final_p = os.path.join(save_base, f"{base_n}-{act_q}.mp4")
 
                 if self.download_danmaku_var.get() and cid:
-                    xml_temp = os.path.join(save_base, f"{base_n}_temp.xml")
+                    xml_temp = os.path.join(save_base, f"{base_clean}_temp.xml") if 'base_clean' in locals() else os.path.join(save_base, f"{base_n}_temp.xml")
                     if self.download_xml(cid, xml_temp, url):
                         self.xml_to_ass_process(xml_temp, act_q)
                         if os.path.exists(xml_temp): os.remove(xml_temp)
@@ -195,10 +194,20 @@ class BiliUniversalDownloader:
                 self.download_file(a_url, a_temp, headers, "音频")
                 
                 self.status_var.set(f"[{i+1}/{total}] ⚙️ 正在无损合并...")
-                subprocess.run(f'ffmpeg -y -i "{v_temp}" -i "{a_temp}" -c copy "{final_p}"', shell=True, capture_output=True)
-                if os.path.exists(v_temp): os.remove(v_temp)
-                if os.path.exists(a_temp): os.remove(a_temp)
-            except Exception as e: print(f"Error: {e}")
+                # 增加合并结果校验
+                merge_res = subprocess.run(f'ffmpeg -y -i "{v_temp}" -i "{a_temp}" -c copy "{final_p}"', shell=True, capture_output=True)
+                if merge_res.returncode == 0:
+                    if os.path.exists(v_temp): os.remove(v_temp)
+                    if os.path.exists(a_temp): os.remove(a_temp)
+                else:
+                    print(f"Merge error: {merge_res.stderr.decode(errors='ignore')}")
+                    self.status_var.set(f"[{i+1}/{total}] ❌ 合并失败，请确认已安装 FFmpeg")
+                    continue
+
+            except Exception as e: 
+                print(f"Error: {e}")
+                self.status_var.set(f"[{i+1}/{total}] ❌ 出错: {str(e)[:20]}")
+                
         self.status_var.set("✅ 全部任务已完成"); self.start_btn.config(state=tk.NORMAL)
         messagebox.showinfo("任务完成", "批量任务处理完毕！")
 
@@ -228,7 +237,6 @@ class BiliUniversalDownloader:
         except: return False
 
     def match_quality(self, data, target):
-        """天花板过滤算法：仅在目标等级及以下寻找最优解"""
         res = data.get('result') or data.get('data')
         a_desc, a_qn = res['accept_description'], res['accept_quality']
         target_val = QUALITY_MAP.get(target, 80)
@@ -236,23 +244,29 @@ class BiliUniversalDownloader:
         
         chosen_qn = None
         chosen_desc = None
-        
-        # 按 QN 降序排列的描述列表
         for desc, qn in q_dict.items():
-            if qn <= target_val: # 只有不高于用户设定的等级才被考虑
+            if qn <= target_val:
                 chosen_qn = qn
                 chosen_desc = desc
-                break # 找到第一个符合条件的（即该范围内最高画质），直接跳出
+                break
         
-        # 保底
         if not chosen_qn:
-            chosen_qn = a_qn[-1]
-            chosen_desc = a_desc[-1]
+            chosen_qn = a_qn[-1]; chosen_desc = a_desc[-1]
             
-        v_url = next((v['baseUrl'] for v in res['dash']['video'] if v['id'] == chosen_qn), res['dash']['video'][0]['baseUrl'])
+        dash_v = res['dash']['video']
+        # 增强流地址查找，确保不为空
+        v_url = ""
+        for v in dash_v:
+            if v['id'] == chosen_qn:
+                v_url = v['baseUrl']
+                break
+        if not v_url and dash_v:
+            v_url = dash_v[0]['baseUrl']
+            
         return v_url, chosen_desc
 
     def download_file(self, url, path, headers, label):
+        if not url: return
         resp = requests.get(url, headers=headers, stream=True)
         total, curr = int(resp.headers.get('Content-Length', 0)), 0
         with open(path, 'ab') as f:
